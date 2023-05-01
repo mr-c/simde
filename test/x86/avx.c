@@ -8444,6 +8444,7 @@ test_simde_mm256_dp_ps(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION_CHECK) || !(defined(SIMDE_X86_AVX_NATIVE) && (HEDLEY_MSVC_VERSION < HEDLEY_VERSION_ENCODE(19,10,0)))
 static int
 test_simde_mm256_extract_epi32(SIMDE_MUNIT_TEST_ARGS) {
   simde__m256i a;
@@ -8482,6 +8483,7 @@ test_simde_mm256_extract_epi32(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif
 
 static int
 test_simde_mm256_extract_epi64(SIMDE_MUNIT_TEST_ARGS) {
@@ -8522,6 +8524,7 @@ test_simde_mm256_extract_epi64(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION_CHECK) || !(defined(SIMDE_X86_AVX_NATIVE) && (HEDLEY_MSVC_VERSION < HEDLEY_VERSION_ENCODE(19,10,0)))
 static int
 test_simde_mm256_insert_epi8(SIMDE_MUNIT_TEST_ARGS) {
   simde__m256i a, r, e;
@@ -8846,6 +8849,7 @@ test_simde_mm256_insert_epi32(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif
 
 static int
 test_simde_mm256_insert_epi64(SIMDE_MUNIT_TEST_ARGS) {
@@ -16327,7 +16331,9 @@ SIMDE_TEST_FUNC_LIST_BEGIN
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_dp_ps)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi32)
+  #if !defined(HEDLEY_MSVC_VERSION_CHECK) || !(defined(SIMDE_X86_AVX_NATIVE) && (HEDLEY_MSVC_VERSION < HEDLEY_VERSION_ENCODE(19,10,0)))
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi32)
+  #endif
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extractf128_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extractf128_ps)
@@ -16341,9 +16347,11 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hsub_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hsub_pd)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insert_epi8)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insert_epi16)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insert_epi32)
+  #if !defined(HEDLEY_MSVC_VERSION_CHECK) || !(defined(SIMDE_X86_AVX_NATIVE) && (HEDLEY_MSVC_VERSION < HEDLEY_VERSION_ENCODE(19,10,0)))
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insert_epi8)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insert_epi16)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insert_epi32)
+  #endif
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insert_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insertf128_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insertf128_ps)

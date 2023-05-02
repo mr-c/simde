@@ -5335,6 +5335,7 @@ test_simde_mm256_cvtepu32_epi64(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION_CHECK) || !(defined(SIMDE_X86_AVX2_NATIVE) && (HEDLEY_MSVC_VERSION < HEDLEY_VERSION_ENCODE(19,10,0)))
 static int
 test_simde_mm256_extract_epi8(SIMDE_MUNIT_TEST_ARGS) {
   simde__m256i a;
@@ -5476,6 +5477,7 @@ test_simde_mm256_extract_epi16(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif
 
 static int
 test_simde_mm256_extracti128_si256(SIMDE_MUNIT_TEST_ARGS) {
@@ -16665,8 +16667,10 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu16_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu32_epi64)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi8)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi16)
+  #if !defined(HEDLEY_MSVC_VERSION_CHECK) || !(defined(SIMDE_X86_AVX2_NATIVE) && (HEDLEY_MSVC_VERSION < HEDLEY_VERSION_ENCODE(19,10,0)))
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi8)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi16)
+  #endif
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extracti128_si256)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hadd_epi16)

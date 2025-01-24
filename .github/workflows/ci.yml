@@ -288,11 +288,25 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 11
+          distro:  ubuntu-24.04-arm
+          arch_flags: -march=native
+        - version: 11
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math
+          ccache: 'true'
         - version: 12
           distro: ubuntu-24.04
           arch_flags: -march=native
         - version: 12
           distro: ubuntu-24.04
+          arch_flags: -ffast-math
+          ccache: 'true'
+        - version: 12
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native
+        - version: 12
+          distro: ubuntu-24.04-arm
           arch_flags: -ffast-math
           ccache: 'true'
         - version: 13
@@ -302,11 +316,25 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 13
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native
+        - version: 13
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math
+          ccache: 'true'
         - version: 14
           distro: ubuntu-24.04
           arch_flags: -march=native
         - version: 14
           distro: ubuntu-24.04
+          arch_flags: -ffast-math
+          ccache: 'true'
+        - version: 14
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native
+        - version: 14
+          distro: ubuntu-24.04-arm
           arch_flags: -ffast-math
           ccache: 'true'
     runs-on: ${{ matrix.distro }}
@@ -322,6 +350,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get update
         sudo apt-get -y install --no-install-recommends gcovr pipx ninja-build gcc-${{ matrix.version }} g++-${{ matrix.version }}
         sudo apt-get -y purge g++ gcc
@@ -349,11 +378,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - version: 11
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-22.04
         - version: 14
           cross: armel
           arch_gnu_abi: eabi
@@ -368,11 +392,6 @@ jobs:
           distro: ubuntu-24.04
         - version: 14
           extra: -no-extras
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 14
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
@@ -555,11 +574,6 @@ jobs:
           arch_gnu: arm
           distro: ubuntu-24.04
         - version: 18
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 18
           extra: -no-extras
           cross: aarch64
           arch_gnu: aarch64
@@ -666,6 +680,14 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: "14"
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=armv8-a+fp+aes+sha2+sha3+sm4+sve+flagm+ssbs+sb+sve2+i8mm+bf16
+          # grep Features < /proc/cpuinfo | head -n 1 | awk '-F: ' '{print $2}' | sed 's/asimd //;s/evtstrm //;s/pmull //;s/sha1 //;s/crc32 //;s/atomics //;s/fphp //;s/asimd.. //g;s/cpuid //;s/asimd... //g;s/jscvt //;s/fcma //;s/lrcpc //;s/dcpop //;s/sm3 //;s/sha512 //;s/uscat //;s/ilrcpc //;s/pac. //g;s/dcpodp //;s/sveaes //;s/svebitperm //;s/svesha3 //;s/svesm4 //;s/flagm2 //;s/frint //;s/svei8mm //;s/svebf16 //' | tr ' ' '+'
+        - version: "14"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math
+          ccache: 'true'
         - version: "15"
           distro: ubuntu-24.04
           arch_flags: -march=native
@@ -673,11 +695,25 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: "15"
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native
+        - version: "15"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math
+          ccache: 'true'
         - version: "16"
           distro: ubuntu-24.04
           arch_flags: -march=native -Wno-unsafe-buffer-usage
         - version: "16"
           distro: ubuntu-24.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          ccache: 'true'
+        - version: "16"
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native -Wno-unsafe-buffer-usage
+        - version: "16"
+          distro: ubuntu-24.04-arm
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage
           ccache: 'true'
         - version: "17"
@@ -690,6 +726,16 @@ jobs:
         - version: "17"
           distro: ubuntu-24.04
           arch_flags: -march=native -Wno-unsafe-buffer-usage -O2
+        - version: "17"
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native -Wno-unsafe-buffer-usage
+        - version: "17"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          ccache: 'true'
+        - version: "17"
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native -Wno-unsafe-buffer-usage -O2
         - version: "18"
           distro: ubuntu-24.04
           arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default
@@ -699,6 +745,16 @@ jobs:
           ccache: 'true'
         - version: "18"
           distro: ubuntu-24.04
+          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "18"
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default
+        - version: "18"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          ccache: 'true'
+        - version: "18"
+          distro: ubuntu-24.04-arm
           arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default -O2
     runs-on: ${{ matrix.distro }}
     env:
@@ -719,6 +775,7 @@ jobs:
         sudo add-apt-repository ppa:savoury1/llvm-defaults-16
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get update
         sudo apt-get -y --no-install-recommends install gcovr ninja-build pipx \
           clang-${{ matrix.version }}
@@ -736,7 +793,7 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
-      run: meson setup build
+      run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: meson compile -C build --verbose
     - name: Test

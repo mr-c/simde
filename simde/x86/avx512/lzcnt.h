@@ -329,7 +329,7 @@ simde_mm_lzcnt_epi64(simde__m128i a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0; i < (sizeof(r_.i64) / sizeof(r_.i64[0])); i++) {
-      r_.i64[i] = (HEDLEY_UNLIKELY(a_.i64[i] == 0) ? HEDLEY_STATIC_CAST(int64_t, sizeof(int64_t) * CHAR_BIT) : HEDLEY_STATIC_CAST(int64_t, simde_x_clz32(HEDLEY_STATIC_CAST(uint64_t, a_.i64[i]))));
+      r_.i64[i] = (HEDLEY_UNLIKELY(a_.i64[i] == 0) ? HEDLEY_STATIC_CAST(int64_t, sizeof(int64_t) * CHAR_BIT) : HEDLEY_STATIC_CAST(int64_t, simde_x_clz64(HEDLEY_STATIC_CAST(uint64_t, a_.i64[i]))));
     }
 
     return simde__m128i_from_private(r_);

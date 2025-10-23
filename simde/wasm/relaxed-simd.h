@@ -363,6 +363,49 @@ simde_wasm_i64x2_relaxed_laneselect(simde_v128_t a, simde_v128_t b, simde_v128_t
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
+simde_wasm_f16x8_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f16x8_relaxed_madd(a, b, c);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f16x8_add(wasm_f16x8_mul(a, b), c);
+  #else
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      c_ = simde_v128_to_private(c),
+      r_;
+
+    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_FMA) && defined(SIMDE_ARM_NEON_FP16)
+      r_.neon_f16 = vfmaq_f16(c_.neon_f16, a_.neon_f16, b_.neon_f16);
+    #elif defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.sse_m128h = _mm_fmadd_ph(a_.sse_m128h, b_.sse_m128h, c_.sse_m128h);
+    #elif defined(SIMDE_X86_F16C_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+      r_.sse_m128i = _mm256_cvtps_ph(_mm256_fmadd_ps(
+		                       _mm256_cvtph_ps(a_.sse_m128i),
+				       _mm256_cvtph_ps(b_.sse_m128i),
+				       _mm256_cvtph_ps(c_.sse_m128i)
+				       ), 0);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_FLOAT16_VECTOR)
+      r_.f16 = (a_.f16 * b_.f16) + c_.f16;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+        r_.f16[i] = simde_float16_from_float32(
+		      simde_math_fmaf(simde_float16_to_float32(a_.f16[i]),
+			              simde_float16_to_float32(b_.f16[i]),
+				      simde_float16_to_float32(c_.f16[i])));
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f16x8_relaxed_madd(a, b, c) simde_wasm_f16x8_relaxed_madd((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
 simde_wasm_f32x4_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
   #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
     return wasm_f32x4_relaxed_madd(a, b, c);
@@ -440,6 +483,43 @@ simde_wasm_f64x2_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
 #endif
 
 /* fms */
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_f16x8_relaxed_nmadd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f16x8_relaxed_nmadd(a, b, c);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f16x8_sub(c, wasm_f16x8_mul(a, b));
+  #else
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      c_ = simde_v128_to_private(c),
+      r_;
+
+    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_FMA) && defined(SIMDE_ARM_NEON_FP16)
+      r_.neon_f16 = vfmsq_f16(c_.neon_f16, a_.neon_f16, b_.neon_f16);
+    #elif defined(SIMDE_X86_FMA_NATIVE)
+      r_.sse_m128 = _mm_fnmadd_ps(a_.sse_m128, b_.sse_m128, c_.sse_m128);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_FLOAT16_VECTOR)
+      r_.f16 = c_.f16 - (a_.f16 * b_.f16);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+        r_.f16[i] = simde_float16_from_float32(
+                      simde_float16_to_float32(c_.f16[i]) - (
+		        simde_float16_to_float32(a_.f16[i]) *
+			simde_float16_to_float32(b_.f16[i])));
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f16x8_relaxed_nmadd(a, b, c) simde_wasm_f16x8_relaxed_nmadd((a), (b), (c))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t

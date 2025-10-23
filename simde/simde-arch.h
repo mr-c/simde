@@ -656,6 +656,10 @@
 #  define SIMDE_ARCH_WASM_RELAXED_SIMD
 #endif
 
+#if defined(SIMDE_ARCH_WASM) && defined(__wasm_fp16__)
+#  define SIMDE_ARCH_WASM_FP16
+#endif
+
 /* Xtensa
    <https://en.wikipedia.org/wiki/> */
 #if defined(__xtensa__) || defined(__XTENSA__)

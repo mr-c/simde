@@ -129,10 +129,14 @@ simde_vrndpq_f16(simde_float16x8_t a) {
       r_,
       a_ = simde_float16x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vrndph_f16(a_.values[i]);
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
+      r_.v128 = wasm_f16x8_ceil(a_.v128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vrndph_f16(a_.values[i]);
+      }
+    #endif
 
     return simde_float16x8_from_private(r_);
   #endif

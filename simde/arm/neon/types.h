@@ -1484,6 +1484,9 @@ typedef union {
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16x8_to_v128,  v128_t,  simde_uint16x8_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint32x4_to_v128,  v128_t,  simde_uint32x4_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint64x2_to_v128,  v128_t,  simde_uint64x2_t)
+  #if defined(SIMDE_ARCH_WASM_FP16)
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16x8_to_v128, v128_t, simde_float16x8_t)
+  #endif
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float32x4_to_v128, v128_t, simde_float32x4_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float64x2_to_v128, v128_t, simde_float64x2_t)
 
@@ -1495,6 +1498,9 @@ typedef union {
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16x8_from_v128,   simde_uint16x8_t, v128_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint32x4_from_v128,   simde_uint32x4_t, v128_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint64x2_from_v128,   simde_uint64x2_t, v128_t)
+  #if defined(SIMDE_ARCH_WASM_FP16)
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16x8_from_v128, simde_float16x8_t, v128_t)
+  #endif
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float32x4_from_v128, simde_float32x4_t, v128_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float64x2_from_v128, simde_float64x2_t, v128_t)
 #endif

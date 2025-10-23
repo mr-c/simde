@@ -185,6 +185,8 @@ simde_float16x8_t
 simde_vpmaxq_f16(simde_float16x8_t a, simde_float16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vpmaxq_f16(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
+    return simde_float16x8_from_v128(wasm_f16x8_max(simde_float16x8_to_v128(a), simde_float16x8_to_v128(b)));
   #else
     return simde_vmaxq_f16(simde_vuzp1q_f16(a, b), simde_vuzp2q_f16(a, b));
   #endif

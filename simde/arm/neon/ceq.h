@@ -426,10 +426,14 @@ simde_vceqq_f16(simde_float16x8_t a, simde_float16x8_t b) {
       a_ = simde_float16x8_to_private(a),
       b_ = simde_float16x8_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vceqh_f16(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
+      r_.v128 = wasm_f16x8_eq(a_.v128, b_.v128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vceqh_f16(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_uint16x8_from_private(r_);
   #endif

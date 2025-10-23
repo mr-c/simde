@@ -137,6 +137,15 @@ simde_vfmaq_f16(simde_float16x8_t a, simde_float16x8_t b, simde_float16x8_t c) {
 
     r_.sv128 = __riscv_vfmacc_vv_f16m1(a_.sv128 , b_.sv128 , c_.sv128 , 8);
     return simde_float16x8_from_private(r_);
+  #elif defined(SIMDE_WASM_RELAXED_SIMD_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
+    simde_float16x8_private
+      r_,
+      a_ = simde_float16x8_to_private(a),
+      b_ = simde_float16x8_to_private(b),
+      c_ = simde_float16x8_to_private(c);
+
+    r_.v128 = wasm_f16x8_relaxed_madd(c_.v128, a_.v128, b_.v128);
+    return simde_float16x8_from_private(r_);
   #else
     return simde_vaddq_f16(a, simde_vmulq_f16(b, c));
   #endif

@@ -429,6 +429,8 @@ simde_vaddq_f16(simde_float16x8_t a, simde_float16x8_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
       r_.sv128 = __riscv_vfadd_vv_f16m1(a_.sv128, b_.sv128, 8);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
+      r_.v128 = wasm_f16x8_add(a_.v128, b_.v128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

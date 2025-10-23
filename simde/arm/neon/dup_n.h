@@ -357,6 +357,8 @@ simde_vdupq_n_f16(simde_float16_t value) {
     simde_float16x8_private r_;
     #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
       r_.sv128 =  __riscv_vfmv_v_f_f16m1(value, 8);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
+      r_.v128 = wasm_f16x8_splat(value);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

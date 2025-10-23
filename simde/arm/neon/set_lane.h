@@ -254,6 +254,8 @@ simde_vsetq_lane_f16(simde_float16_t a, simde_float16x8_t v, const int lane)
   simde_float16x8_t r;
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     SIMDE_CONSTIFY_8_(vsetq_lane_f16, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
+    SIMDE_CONSTIFY_8_(wasm_f16x8_replace_lane, r, (HEDLEY_UNREACHABLE(), v), lane, a, simde_float16x8_to_v128(v));
   #else
     simde_float16x8_private v_ = simde_float16x8_to_private(v);
     v_.values[lane] = a;

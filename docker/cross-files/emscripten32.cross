@@ -1,15 +1,15 @@
 [binaries]
-c = ['ccache', '/opt/emsdk/upstream/emscripten/emcc']
-cpp = ['ccache', '/opt/emsdk/upstream/emscripten/em++']
-ar = '/opt/emsdk/upstream/emscripten/emar'
-strip = '/opt/emsdk/upstream/bin/llvm-strip'
-objcopy = '/opt/emsdk/upstream/bin/llvm-objcopy'
+c = ['ccache', 'emcc']
+cpp = ['ccache', 'em++']
+ar = 'emar'
+strip = 'llvm-strip'
+objcopy = 'llvm-objcopy'
 exe_wrapper = ['v8']
 
 [properties]
 skip_sanity_check = true
-c_args = ['-Weverything', '-fno-lax-vector-conversions', '-Werror', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default', '-Wno-implicit-int-conversion-on-negation', '-Wno-sign-conversion', '-Wno-implicit-int-conversion']
-cpp_args = ['-Weverything', '-fno-lax-vector-conversions', '-Werror', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default', '-Wno-implicit-int-conversion-on-negation', '-Wno-sign-conversion', '-Wno-implicit-int-conversion']
+c_args = ['-Weverything', '-fno-lax-vector-conversions', '-Werror', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default', '-Wno-implicit-int-conversion-on-negation', '-Wno-sign-conversion', '-Wno-implicit-int-conversion', '-mfp16']
+cpp_args = ['-Weverything', '-fno-lax-vector-conversions', '-Werror', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default', '-Wno-implicit-int-conversion-on-negation', '-Wno-sign-conversion', '-Wno-implicit-int-conversion', '-mfp16']
 c_link_args = ['-s', 'ENVIRONMENT=shell']
 cpp_link_args = ['-s', 'ENVIRONMENT=shell']
 

@@ -26,6 +26,49 @@
 #include "test-relaxed-simd.h"
 
 static int
+test_simde_wasm_f16x8_relaxed_madd(SIMDE_MUNIT_TEST_ARGS) {
+  #if 0
+    SIMDE_TEST_STRUCT_MODIFIERS struct {
+      simde_float16 a[sizeof(simde_v128_t) / sizeof(simde_float16)];
+      simde_float16 b[sizeof(simde_v128_t) / sizeof(simde_float16)];
+      simde_float16 c[sizeof(simde_v128_t) / sizeof(simde_float16)];
+      simde_float16 r[sizeof(simde_v128_t) / sizeof(simde_float16)];
+    } test_vec[] = {
+      #if !defined(SIMDE_FAST_MATH)
+      #endif
+    };
+
+    for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+      simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
+      simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
+      simde_v128_t c = simde_wasm_v128_load(test_vec[i].b);
+      simde_v128_t r = simde_wasm_f16x8_relaxed_madd(a, b, c);
+      simde_test_wasm_f16x8_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), 1);
+    }
+    return 0;
+  #else
+    simde_float16 inputs[8 * 2 * (sizeof(simde_v128_t) / sizeof(simde_float16))];
+    simde_test_wasm_f16x8_random_full(8, 2, inputs, SIMDE_FLOAT16_C(-1000.0), SIMDE_FLOAT16_C(1000.0), HEDLEY_STATIC_CAST(SimdeTestVecFloatType, SIMDE_TEST_VEC_FLOAT_NAN | SIMDE_TEST_VEC_FLOAT_EQUAL));
+    fputc('\n', stdout);
+    for (size_t i = 0 ; i < 8 ; i++) {
+      simde_v128_t
+        a = simde_test_wasm_f16x8_random_full_extract(2, inputs, i, 0),
+        b = simde_test_wasm_f16x8_random_full_extract(2, inputs, i, 1),
+        c = simde_test_wasm_f16x8_random_full_extract(2, inputs, i, 1),
+        r;
+
+      r = simde_wasm_f16x8_relaxed_madd(a, b, c);
+
+      simde_test_wasm_f16x8_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
+      simde_test_wasm_f16x8_write(3, b, SIMDE_TEST_VEC_POS_MIDDLE);
+      simde_test_wasm_f16x8_write(3, c, SIMDE_TEST_VEC_POS_MIDDLE);
+      simde_test_wasm_f16x8_write(3, r, SIMDE_TEST_VEC_POS_LAST);
+    }
+    return 1;
+  #endif
+}
+
+static int
 test_simde_wasm_f32x4_relaxed_madd(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
@@ -176,6 +219,7 @@ test_simde_wasm_f64x2_relaxed_madd(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_f16x8_relaxed_madd)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_f32x4_relaxed_madd)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_f64x2_relaxed_madd)
 SIMDE_TEST_FUNC_LIST_END

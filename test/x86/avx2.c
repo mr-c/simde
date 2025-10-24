@@ -27,7 +27,7 @@
 #endif
 #include <simde/x86/avx2.h>
 #include <test/x86/test-avx.h>
-#if !defined(HEDLEY_MSVC_VERSION)
+#if !defined(HEDLEY_MSVC_VERSION) && !defined(__wasi__)
   #include <sys/mman.h>
 #endif
 
@@ -7804,7 +7804,7 @@ test_simde_mm_maskload_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-#if !defined(HEDLEY_MSVC_VERSION)
+#if !defined(HEDLEY_MSVC_VERSION) && !defined(__wasi__)
 static int
 test_simde_mm_maskload_epi32_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
   // ref: https://github.com/simd-everywhere/simde/issues/998
@@ -7865,7 +7865,7 @@ test_simde_mm256_maskload_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-#if !defined(HEDLEY_MSVC_VERSION)
+#if !defined(HEDLEY_MSVC_VERSION) && !defined(__wasi__)
 static int
 test_simde_mm256_maskload_epi32_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
   // ref: https://github.com/simd-everywhere/simde/issues/998
@@ -7932,7 +7932,7 @@ test_simde_mm_maskload_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-#if !defined(HEDLEY_MSVC_VERSION)
+#if !defined(HEDLEY_MSVC_VERSION) && !defined(__wasi__)
 static int
 test_simde_mm_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
   // ref: https://github.com/simd-everywhere/simde/issues/998
@@ -8003,7 +8003,7 @@ test_simde_mm256_maskload_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-#if !defined(HEDLEY_MSVC_VERSION)
+#if !defined(HEDLEY_MSVC_VERSION) && !defined(__wasi__)
 static int
 test_simde_mm256_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
   // ref: https://github.com/simd-everywhere/simde/issues/998
@@ -16868,7 +16868,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi64)
 
-  #if !defined(HEDLEY_MSVC_VERSION)
+  #if !defined(HEDLEY_MSVC_VERSION) && !defined(__wasi__)
     SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_epi32_no_illegal_memory_access)
     SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi32_no_illegal_memory_access)
     SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_epi64_no_illegal_memory_access)

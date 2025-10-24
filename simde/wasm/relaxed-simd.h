@@ -364,9 +364,9 @@ simde_wasm_i64x2_relaxed_laneselect(simde_v128_t a, simde_v128_t b, simde_v128_t
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
 simde_wasm_f16x8_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
-  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
     return wasm_f16x8_relaxed_madd(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
     return wasm_f16x8_add(wasm_f16x8_mul(a, b), c);
   #else
     simde_v128_private
@@ -487,9 +487,9 @@ simde_wasm_f64x2_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
 simde_wasm_f16x8_relaxed_nmadd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
-  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
     return wasm_f16x8_relaxed_nmadd(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_ARCH_WASM_FP16)
     return wasm_f16x8_sub(c, wasm_f16x8_mul(a, b));
   #else
     simde_v128_private

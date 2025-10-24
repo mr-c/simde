@@ -1,0 +1,15 @@
+[binaries]
+strip = ['/home/mi/crusoe/src/wasi-sdk-26.0-x86_64-linux/bin/llvm-strip']
+exe_wrapper = ['wasmtime']
+
+[built-in options]
+c_args = ['-DSIMDE_TEST_BARE', '-msimd128', '-mfp16', '--sysroot=/home/mi/crusoe/src/wasi-sdk-26.0-x86_64-linux/share/wasi-sysroot']
+cpp_args = ['-DSIMDE_TEST_BARE', '-msimd128', '-mfp16', '--sysroot=/home/mi/crusoe/src/wasi-sdk-26.0-x86_64-linux/share/wasi-sysroot']
+#c_link_args = ['-lwasi-emulated-mman']
+#cpp_link_args = ['-lwasi-emulated-mman']
+
+[host_machine]
+cpu_family = 'wasm32'
+endian = 'little'
+cpu = 'wasm32'
+system = 'linux'

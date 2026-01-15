@@ -129,7 +129,6 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
@@ -143,7 +142,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: gcc-16-${{ github.job }}-${{ steps.cpu.outputs.model_name }}
+        key: gcc-16-${{ github.job }}
         verbose: 2
     - name: Configure
       run: meson setup build -Dsleef=enabled || (cat build/meson-logs/meson-log.txt ; false)
@@ -169,7 +168,6 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
@@ -183,7 +181,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: gcc-16-${{ github.job }}-${{ steps.cpu.outputs.model_name }}
+        key: gcc-16-${{ github.job }}
         verbose: 2
     - name: Configure
       run: meson setup build -Dsleef=enabled || (cat build/meson-logs/meson-log.txt ; false)
@@ -216,7 +214,6 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts

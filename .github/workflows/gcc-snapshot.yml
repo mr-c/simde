@@ -47,7 +47,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
           pipx gcc-16 g++-16 ccache
         sudo apt-get purge -y gcc g++
@@ -91,7 +91,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
           pipx g++-16 gcc-16 qemu-user-static
         sudo apt-get purge -y gcc g++
@@ -132,7 +132,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
           libsleef-dev pipx gcc-16 g++-16 ccache
         sudo apt-get purge -y gcc g++
@@ -171,7 +171,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
           libsleef-dev pipx gcc-16 g++-16 ccache
         sudo apt-get purge -y gcc g++
@@ -218,7 +218,6 @@ jobs:
       run: |
         sudo add-apt-repository ppa:stephanosio/ccache
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        sudo apt-get update
         sudo apt-get -y install --no-install-recommends pipx ninja-build gcc-${{ matrix.version }} g++-${{ matrix.version }} ccache
         sudo apt-get -y purge g++ gcc
         sudo ln -s /usr/bin/gcc-${{ matrix.version }} /usr/bin/gcc
@@ -312,7 +311,7 @@ jobs:
   #   - name: Install APT Dependencies
   #     run: |
   #       sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-  #       sudo apt-get update && sudo apt-get -y --no-install-recommends install ccache ninja-build \
+  #       sudo apt-get -y --no-install-recommends install ccache ninja-build \
   #         gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
   #         g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
   #         qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross

@@ -198,8 +198,10 @@ jobs:
       matrix:
         include:
         - version: 16
-          distro: ubuntu-24.04-arm
+          distro: ubuntu-24.04
           arch_flags: -ffast-math
+        - version: 16
+          distro: ubuntu-24.04
         - version: 16
           distro: ubuntu-24.04-arm
     runs-on: ${{ matrix.distro }}

@@ -118,8 +118,6 @@ jobs:
     env:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
-      CC: gcc-16
-      CXX: g++-16
     steps:
     - uses: actions/checkout@v6
       with:
@@ -143,6 +141,9 @@ jobs:
       with:
         key: gcc-16-${{ github.job }}
         verbose: 2
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build -Dsleef=enabled || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
@@ -157,8 +158,6 @@ jobs:
     env:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
-      CC: gcc-16
-      CXX: g++-16
     steps:
     - uses: actions/checkout@v6
       with:
@@ -182,6 +181,9 @@ jobs:
       with:
         key: gcc-16-${{ github.job }}
         verbose: 2
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build -Dsleef=enabled || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build

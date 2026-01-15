@@ -73,7 +73,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde" $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde"  # $(meson test -C build --list | grep -v emul)
 
   x86-xop:
     runs-on: ubuntu-24.04
@@ -151,7 +151,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs  # $(meson test -C build --list | grep -v emul)
 
   sleef-arm:
     runs-on: ubuntu-24.04-arm
@@ -190,7 +190,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs  # $(meson test -C build --list | grep -v emul)
 
   gcc:
     strategy:
@@ -216,13 +216,22 @@ jobs:
         cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
         sudo apt-get update
-        sudo apt-get -y install --no-install-recommends pipx ninja-build gcc-${{ matrix.version }} g++-${{ matrix.version }}
+        sudo apt-get -y install --no-install-recommends pipx ninja-build gcc-${{ matrix.version }} g++-${{ matrix.version }} ccache
         sudo apt-get -y purge g++ gcc
         sudo ln -s /usr/bin/gcc-${{ matrix.version }} /usr/bin/gcc
         sudo ln -s /usr/bin/g++-${{ matrix.version }} /usr/bin/g++
         pipx install meson==0.55.1
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
+        verbose: 2
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
@@ -230,7 +239,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs  # $(meson test -C build --list | grep -v emul)
 
   # gcc-qemu:
   #   strategy:

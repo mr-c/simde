@@ -243,96 +243,96 @@ jobs:
         # shellcheck disable=SC2046
         meson test -C build --print-errorlogs  # $(meson test -C build --list | grep -v emul)
 
-  # gcc-qemu:
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #       - version: 16
-  #         cross: armel
-  #         arch_gnu_abi: eabi
-  #         arch_deb: armel
-  #         arch_gnu: arm
-  #         distro: ubuntu-24.04-arm
-  #       - version: 16
-  #         cross: armv7
-  #         arch_gnu: arm
-  #         arch_gnu_abi: eabihf
-  #         arch_deb: armhf
-  #         distro: ubuntu-24.04-arm
-  #       - version: 16
-  #         extra: -no-extras
-  #         cross: aarch64
-  #         arch_gnu: aarch64
-  #         arch_deb: arm64
-  #         distro: ubuntu-24.04-arm
-  #       - version: 16
-  #         cross: aarch64
-  #         arch_gnu: aarch64
-  #         arch_deb: arm64
-  #         distro: ubuntu-24.04-arm
-  #       - extra: -32bit
-  #         version: 16
-  #         cross: armv8
-  #         arch_gnu: arm
-  #         arch_gnu_abi: eabihf
-  #         arch_deb: armhf
-  #         distro: ubuntu-24.04-arm
-  #       - version: 16
-  #         cross: riscv64
-  #         arch_gnu: riscv64
-  #         arch_deb: riscv64
-  #         distro: ubuntu-24.04-arm
-  #       - extra: -O3
-  #         version: 16
-  #         cross: riscv64
-  #         arch_gnu: riscv64
-  #         arch_deb: riscv64
-  #         distro: ubuntu-24.04-arm
-  #       - version: 16
-  #         cross: s390x
-  #         arch_gnu: s390x
-  #         arch_deb: s390x
-  #         distro: ubuntu-24.04-arm
-  #       - version: 16
-  #         cross: power9
-  #         arch_gnu: powerpc64le
-  #         arch_deb: ppc64el
-  #         distro: ubuntu-24.04-arm
-  #       - version: 16
-  #         cross: loongarch64
-  #         arch_gnu: loongarch64
-  #         arch_deb: loong64
-  #         distro: ubuntu-24.04-arm
-  #   runs-on: ${{ matrix.distro }}
-  #   steps:
-  #   - uses: actions/checkout@v6
-  #     with:
-  #       submodules: recursive
-  #   - name: CPU Information
-  #     run: cat /proc/cpuinfo
-  #   - name: Install APT Dependencies
-  #     run: |
-  #       sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-  #       sudo apt-get -y --no-install-recommends install ccache ninja-build \
-  #         gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
-  #         g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
-  #         qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
-  #       pipx install meson==0.55.1
-  #   - name: ccache
-  #     uses: hendrikmuhs/ccache-action@v1.2
-  #     with:
-  #       key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
-  #       evict-old-files: 1d
-  #       verbose: 2
-  #   - name: add ccache to the build path
-  #     run: |
-  #       export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-  #   - name: Configure
-  #     run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}${{ matrix.extra}}-ccache.cross build || (cat build/meson-logs/meson-log.txt ; false)
-  #   - name: Build
-  #     run: ninja -C build -v
-  #   - name: Test
-  #     run: |
-  #       # shellcheck disable=SC2046
-  #       meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+  gcc-qemu:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - version: 16
+          cross: armel
+          arch_gnu_abi: eabi
+          arch_deb: armel
+          arch_gnu: arm
+          distro: ubuntu-24.04
+        - version: 16
+          cross: armv7
+          arch_gnu: arm
+          arch_gnu_abi: eabihf
+          arch_deb: armhf
+          distro: ubuntu-24.04
+        - version: 16
+          extra: -no-extras
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-24.04
+        - version: 16
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-24.04
+        - extra: -32bit
+          version: 16
+          cross: armv8
+          arch_gnu: arm
+          arch_gnu_abi: eabihf
+          arch_deb: armhf
+          distro: ubuntu-24.04
+        - version: 16
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-24.04
+        - extra: -O3
+          version: 16
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-24.04
+        - version: 16
+          cross: s390x
+          arch_gnu: s390x
+          arch_deb: s390x
+          distro: ubuntu-24.04
+        - version: 16
+          cross: power9
+          arch_gnu: powerpc64le
+          arch_deb: ppc64el
+          distro: ubuntu-24.04
+        - version: 16
+          cross: loongarch64
+          arch_gnu: loongarch64
+          arch_deb: loong64
+          distro: ubuntu-24.04
+    runs-on: ${{ matrix.distro }}
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        sudo apt-get -y --no-install-recommends install ccache ninja-build \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
+          qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+        pipx install meson==0.55.1
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
+        evict-old-files: 1d
+        verbose: 2
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}${{ matrix.extra}}-ccache.cross build || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --print-errorlogs

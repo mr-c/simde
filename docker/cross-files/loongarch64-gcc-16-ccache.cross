@@ -1,7 +1,7 @@
 [binaries]
 c = ['ccache', 'loongarch64-linux-gnu-gcc-16']
 cpp = ['ccache', 'loongarch64-linux-gnu-g++-16']
-ar = 'loongarch64-linux-gnu-gcc-ar-15'
+ar = 'loongarch64-linux-gnu-gcc-ar-16'
 strip = 'loongarch64-linux-gnu-strip'
 objcopy = 'loongarch64-linux-gnu-objcopy'
 ld = 'loongarch64-linux-gnu-ld'
